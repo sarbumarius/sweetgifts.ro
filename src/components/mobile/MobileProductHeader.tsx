@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ShoppingCart, ChevronDown, Heart, ArrowLeft, Menu, Search } from 'lucide-react';
-import logo from '@/assets/logo-daruri.svg';
+import logo from '@/assets/sweetgifts.svg';
 
 interface MobileProductHeaderProps {
   title: string;
@@ -33,7 +33,7 @@ const MobileProductHeader = ({
   onBackInlineClick,
   centerTitle = false,
   onMenuClick,
-  showTopBanners = true,
+  showTopBanners = false,
 }: MobileProductHeaderProps) => {
   const [isAtTop, setIsAtTop] = useState(true);
   const [bannerIndex, setBannerIndex] = useState(0);
@@ -105,12 +105,17 @@ const MobileProductHeader = ({
                 type="button"
                 onClick={onMenuClick}
                 data-track-action="A deschis meniul din header."
-                className="rounded-md border border-amber-900/20 p-2 transition-transform hover:scale-110 active:scale-95"
+                className="rounded-md border border-amber-900/20 p-2 transition-transform hover:scale-110 active:scale-95 hidden"
                 aria-label="Meniu"
               >
                 <Menu className="h-4 w-4 text-primary-foreground" />
               </button>
             )}
+
+
+
+
+
             <button
               type="button"
               onClick={onLogoClick}
@@ -118,32 +123,10 @@ const MobileProductHeader = ({
               className="transition-transform hover:scale-105 active:scale-95"
               aria-label="Daruri Alese"
             >
-              <img src={logo} alt="Daruri Alese" className="h-7 w-auto" />
+              <img src={logo} alt="Daruri Alese" className="h-16 w-auto" />
             </button>
-            {onSearchClick && (
-              <button
-                type="button"
-                onClick={onSearchClick}
-                data-track-action="A apasat pe cauta din header."
-                className="rounded-md border border-amber-900/20 p-2 transition-transform hover:scale-110 active:scale-95"
-                aria-label="Cauta"
-              >
-                <Search className="h-4 w-4 text-primary-foreground" />
-              </button>
-            )}
-            {categoryTitle ? (
-              <button
-                type="button"
-                onClick={onCategoryClick}
-                data-track-action="A deschis selectorul de categorie din header."
-                className="flex min-w-0 flex-1 items-center gap-2 rounded-xl bg-primary-foreground/20 px-3 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary-foreground/30 active:scale-95"
-              >
-                <span className="line-clamp-1 flex-1">{categoryTitle}</span>
-                <ChevronDown className="h-4 w-4" />
-              </button>
-            ) : centerTitle ? null : (
-              <h1 className="line-clamp-1 text-base font-semibold text-primary-foreground">{title}</h1>
-            )}
+
+
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -153,7 +136,7 @@ const MobileProductHeader = ({
               onClick={onWishlistClick}
               data-track-action="A apasat pe wishlist din header."
             >
-              <Heart className="h-5 w-5 text-primary-foreground" />
+              <Heart className="h-8 w-8  text-primary-foreground" />
               {wishlistCount > 0 && (
                 <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-card text-[10px] font-bold text-primary">
                   {wishlistCount}
@@ -167,7 +150,7 @@ const MobileProductHeader = ({
               onClick={onCartClick}
               data-track-action="A apasat pe cos din header."
             >
-              <ShoppingCart className="h-5 w-5 text-primary-foreground" />
+              <ShoppingCart className="h-8 w-8  text-primary-foreground" />
               {cartCount > 0 && (
                 <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-card text-[10px] font-bold text-primary">
                   {cartCount}

@@ -1,6 +1,6 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import WishlistPage from './WishlistPage';
-import DesktopWishlistPage from './DesktopWishlistPage';
+import DesktopWorkInProgressPage from './DesktopWorkInProgressPage';
 
 const WishlistPageEntry = () => {
   const isMobile = useIsMobile();
@@ -13,7 +13,7 @@ const WishlistPageEntry = () => {
     );
   }
 
-  return isMobile ? <WishlistPage /> : <DesktopWishlistPage />;
+  return isMobile ? <WishlistPage /> : <DesktopWorkInProgressPage />;
 };
 
 export default WishlistPageEntry;

@@ -1,5 +1,6 @@
 import { X, Phone, Mail, Home, Store, Tag, Users, Calendar, BookOpen, MessageCircle, HelpCircle, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import logo from '@/assets/sweetgifts.svg';
 import { useCategoryContext } from '@/contexts/CategoryContext';
 
 interface MobileMenuModalProps {
@@ -9,8 +10,8 @@ interface MobileMenuModalProps {
 }
 
 const menuItems = [
-  { label: 'Categorii produse', href: '#', icon: Store, isDefaultCategory: true },
-  { label: 'Reduceri', href: '/reduceri', icon: Tag },
+  // { label: 'Categorii produse', href: '#', icon: Store, isDefaultCategory: true },
+  { label: 'Reduceri', href: '/recenzii', icon: Tag },
   // { label: 'Calendar Oferte', href: '#', icon: Calendar },
   { label: 'Recenzii clienti', href: '/recenzii', icon: MessageCircle },
   { label: 'Intrebari frecvente', href: '/intrebari-frecvente', icon: HelpCircle },
@@ -33,7 +34,7 @@ const MobileMenuModal = ({ isOpen, onClose, onOpenCategories }: MobileMenuModalP
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[280px] pointer-events-auto animate-scale-in overflow-hidden">
+        <div className="gold-gradient rounded-2xl shadow-2xl w-full max-w-[280px] pointer-events-auto animate-scale-in overflow-hidden">
           {/* Header cu Close Button */}
           <div className="flex justify-end p-4 pb-0">
             <button
@@ -47,9 +48,9 @@ const MobileMenuModal = ({ isOpen, onClose, onOpenCategories }: MobileMenuModalP
           {/* Logo */}
           <div className="flex flex-col items-center px-6 pb-6">
             <img
-              src="https://darurialese.ro/wp-content/themes/woodmart-child/img/logo-menu-wt-01.svg"
+              src={logo}
               alt="Daruri Alese"
-              className="h-24 w-auto"
+              className="h-28 w-auto"
             />
           </div>
 
@@ -65,7 +66,7 @@ const MobileMenuModal = ({ isOpen, onClose, onOpenCategories }: MobileMenuModalP
                       onClose();
                       return;
                     }
-                    setCurrentSlug('cadouri-pentru-botez');
+                    setCurrentSlug('cadouri-ziua-indragostitilor');
                     navigate('/');
                     onClose();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -87,13 +88,13 @@ const MobileMenuModal = ({ isOpen, onClose, onOpenCategories }: MobileMenuModalP
                       type="button"
                       onClick={handleClick}
                       data-track-action={`A apasat pe ${item.label} in meniu.`}
-                      className="py-2 px-5 border border-t-1 border-b-0 border-l-0 border-r-0 flex items-center justify-between gap-2 text-left text-foreground hover:bg-muted/50 transition-all hover:scale-[1.02] active:scale-[0.98] font-medium"
+                      className="py-2 px-5 border border-t-1 border-b-0  border-[#000]/10 border-l-0 border-r-0 flex items-center justify-between gap-2 text-left text-white hover:bg-muted/50 transition-all hover:scale-[1.02] active:scale-[0.98] font-medium"
                     >
                       <div className="flex items-center gap-2">
                         <Icon className="h-4 w-4" />
                         {item.label}
                       </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      <ChevronRight className="h-4 w-4 text-white" />
                     </button>
                   ) : (
                     <a
@@ -122,19 +123,19 @@ const MobileMenuModal = ({ isOpen, onClose, onOpenCategories }: MobileMenuModalP
             <a
               href="tel:0748777776"
               data-track-action="A apasat pe telefon in meniu."
-              className="mb-3 flex items-center gap-2 py-3 px-4 text-left gold-gradient text-white font-semibold rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md"
+              className="mb-3 flex items-center gap-2 py-3 px-4 text-left bg-white text-red-700 font-semibold rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md"
             >
               <Phone className="h-4 w-4" />
               Suna la 0748.777.776
             </a>
 
             <a
-              href="mailto:office@darurialese.ro"
+              href="mailto:hello@sweetgifts.ro"
               data-track-action="A apasat pe email in meniu."
               className="flex items-center gap-2 py-2.5 px-4 text-left rounded-lg bg-muted/40 text-xs font-semibold text-foreground transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Mail className="h-4 w-4" />
-              Email office@darurialese.ro
+              Email hello@sweetgifts.ro
             </a>
           </div>
         </div>

@@ -21,16 +21,19 @@ const MobileCategoryPage = () => {
       .filter(Boolean)
       .slice(0, 12) || [];
   const floaterRows = 1;
+  const totalReviews =
+    data?.produse?.reduce((sum, produs) => sum + (produs.nr_recenzii || 0), 0) || 0;
+  const totalReviewsLabel = totalReviews.toLocaleString('ro-RO');
 
   const handleSearchClick = () => {
-    bottomNavRef.current?.openSearch();
+    bottomNavRef.current?.openWheel();
   };
 
   return (
     <div className="min-h-screen bg-white pb-4">
       <MobileHeader onSearchClick={handleSearchClick} />
 
-      <div className="relative w-full cloud-chaos min-h-[18rem] flex flex-col bg-[linear-gradient(135deg,#d1883f,#6e4514)] ">
+        <div className="relative w-full cloud-chaos min-h-[18rem] flex flex-col bg-[linear-gradient(135deg,#fc134f,#780c20)] ">
           {data?.info?.imagine && (
             <div className="pointer-events-none absolute inset-0 flex items-center justify-end pr-2 -top-12 opacity-20">
               <img
@@ -69,20 +72,23 @@ const MobileCategoryPage = () => {
               })}
             </div>
           )}
-          <div className="relative z-10 bg-[#fff] py-2 px-4 text-center -ml-3 -mr-3 mb-3 rounded-b-2xl">
+          <div className="relative z-10 bg-[#d9b35e] py-2 px-4 text-center -ml-3 -mr-3 mb-3 rounded-b-2xl">
               <a
                   href="/recenzii"
-                  aria-label="★★★★★ 5 din 5 din 5.094 de reviewuri. Vezi recenzii"
+                  aria-label={`★★★★★ 5 din 5 din ${totalReviewsLabel} de reviewuri. Vezi recenzii`}
                   data-track-action="A apasat pe linkul catre recenzii."
-                  className="block text-xs text-amber-900 no-underline whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="block text-xs text-white no-underline whitespace-nowrap overflow-hidden text-ellipsis"
               >
                   <span className="text-yellow-300">★★★★★</span>
-                  <span className="mx-2">5 / 5 din 5.094 de reviewuri • Vezi recenzii</span>
+                  <span className="mx-2">5 / 5 din {totalReviewsLabel} de reviewuri • Vezi recenzii</span>
               </a>
           </div>
-        <div className="relative z-10 mt-auto">
+        <div className="relative z-10 ">
 
-          <MobileCategoryCards onOpenCategories={() => bottomNavRef.current?.openCategories()} />
+          <MobileCategoryCards
+            onOpenCategories={() => bottomNavRef.current?.openCategories()}
+            onOpenFilters={() => setIsFilterOpen(true)}
+          />
         </div>
       </div>
 

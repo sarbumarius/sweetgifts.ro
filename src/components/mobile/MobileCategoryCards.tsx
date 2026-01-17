@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCategoryContext } from '@/contexts/CategoryContext';
 import { Baby, Users, Gift, Heart, Mail, ArrowLeft, Info, Grid } from 'lucide-react';
+import MobileCategoryFilterSlide from './MobileCategoryFilterSlide';
+import MobileCategoryTypeSlide from './MobileCategoryTypeSlide';
 
 interface MobileCategoryCardsProps {
   onOpenCategories?: () => void;
+  onOpenFilters?: () => void;
 }
 
-const MobileCategoryCards = ({ onOpenCategories }: MobileCategoryCardsProps) => {
+const MobileCategoryCards = ({ onOpenCategories, onOpenFilters }: MobileCategoryCardsProps) => {
   const { data, loading, setCurrentSlug } = useCategoryContext();
   const navigate = useNavigate();
   const [showDescription, setShowDescription] = useState(false);
@@ -62,6 +65,12 @@ const MobileCategoryCards = ({ onOpenCategories }: MobileCategoryCardsProps) => 
   const shouldShowParent = parentCategory && parentCategory.titlu !== 'Ocazii speciale';
   const totalCards =
     filteredSubcategories.length + (shouldShowParent ? 1 : 0) + (showOtherCategoriesCard ? 1 : 0);
+  const tipuriSection = (
+    <div className="tipuri">
+      <MobileCategoryFilterSlide onOpenFilters={onOpenFilters} />
+      <MobileCategoryTypeSlide />
+    </div>
+  );
 
   if (totalCards === 0) {
     return (
@@ -69,20 +78,9 @@ const MobileCategoryCards = ({ onOpenCategories }: MobileCategoryCardsProps) => 
         <div className={`mb-3 ${showDescription ? 'mt-8' : ''}`}>
           <div className="flex items-center gap-2 mb-1">
             <h2 className="text-white text-3xl font-serif">{categoryTitle}</h2>
-            <button
-              onClick={() => setShowDescription(!showDescription)}
-              className="rounded-full p-1 hover:bg-white/10 transition-colors active:scale-95"
-              aria-label="Informatii despre categorie"
-            >
-              <Info className={`h-5 w-5 text-white transition-transform ${showDescription ? 'rotate-180' : ''}`} />
-            </button>
+
           </div>
-          <p className="text-white/80 text-sm ">
-            {productCount} {productCount === 1 ? 'produs' : 'produse'}
-          </p>
-          <p className="text-white/80 text-xs leading-relaxed pb-8">
-            {descriptionText.length > 180 ? `${descriptionText.slice(0, 180)}...` : descriptionText}
-          </p>
+
 
           {showDescription && (
             <div className="mt-3 mr-3 bg-white/10 backdrop-blur-sm rounded-lg p-3 animate-fade-in">
@@ -92,6 +90,7 @@ const MobileCategoryCards = ({ onOpenCategories }: MobileCategoryCardsProps) => 
             </div>
           )}
         </div>
+        {tipuriSection}
       </div>
     );
   }
@@ -141,6 +140,8 @@ const MobileCategoryCards = ({ onOpenCategories }: MobileCategoryCardsProps) => 
           </div>
         )}
       </div>
+
+      {tipuriSection}
 
       <div className={getContainerClass()}>
         {shouldShowParent && parentCategory && (

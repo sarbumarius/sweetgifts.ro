@@ -183,7 +183,7 @@ const ThankYouPage = () => {
         onBack={() => navigate(-1)}
         centerTitle
         onLogoClick={() => {
-          setCurrentSlug('cadouri-pentru-botez');
+          setCurrentSlug('cadouri-ziua-indragostitilor');
           navigate('/');
         }}
         cartCount={cart.length}

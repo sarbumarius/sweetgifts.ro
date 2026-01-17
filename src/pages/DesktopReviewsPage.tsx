@@ -56,7 +56,7 @@ const DesktopReviewsPage = () => {
     document.title = 'Recenzii clienti | Daruri Alese Catalog';
     let isMounted = true;
 
-    fetch('/cache_app/recenzii.json')
+    fetch('/cache_app/recenzii-default.json')
       .then((res) => {
         if (!res.ok) {
           throw new Error('Failed to load reviews');
@@ -81,7 +81,18 @@ const DesktopReviewsPage = () => {
     };
   }, []);
 
-  const bestSellers = useMemo(() => data?.produse_din_recenzii ?? [], [data]);
+  const bestSellers = useMemo(() => {
+    if (!data) return [];
+    const counts = new Map<string, number>();
+    [...data.recenzii_cu_poza, ...data.recenzii_text].forEach((review) => {
+      counts.set(review.id_produs, (counts.get(review.id_produs) || 0) + 1);
+    });
+    return [...data.produse_din_recenzii].sort((a, b) => {
+      const aCount = counts.get(String(a.id)) || 0;
+      const bCount = counts.get(String(b.id)) || 0;
+      return bCount - aCount;
+    });
+  }, [data]);
 
   useEffect(() => {
     const el = sliderRef.current;
@@ -102,25 +113,50 @@ const DesktopReviewsPage = () => {
     };
   }, [bestSellers.length]);
 
-  const reviews = useMemo(() => {
+  const reviewsByProduct = useMemo(() => {
     if (!data) return [];
-    if (selectedProductId) {
-      const combined = [...data.recenzii_cu_poza, ...data.recenzii_text];
-      return combined.filter((review) => review.id_produs === selectedProductId);
-    }
-    return activeTab === 'photos' ? data.recenzii_cu_poza : data.recenzii_text;
-  }, [activeTab, data, selectedProductId]);
+    const combined = [...data.recenzii_cu_poza, ...data.recenzii_text];
+    const counts = new Map<string, number>();
+    combined.forEach((review) => {
+      counts.set(review.id_produs, (counts.get(review.id_produs) || 0) + 1);
+    });
 
-  const paginatedReviews = reviews;
+    const base = activeTab === 'photos' ? data.recenzii_cu_poza : data.recenzii_text;
+
+    const grouped = new Map<string, ReviewItem[]>();
+    base.forEach((review) => {
+      const list = grouped.get(review.id_produs) || [];
+      list.push(review);
+      grouped.set(review.id_produs, list);
+    });
+
+    const products = [...data.produse_din_recenzii].sort((a, b) => {
+      const aCount = counts.get(String(a.id)) || 0;
+      const bCount = counts.get(String(b.id)) || 0;
+      return bCount - aCount;
+    });
+
+    return products
+      .map((product) => ({
+        product,
+        reviews: grouped.get(String(product.id)) || [],
+      }))
+      .filter((entry) => entry.reviews.length > 0);
+  }, [activeTab, data]);
+
+  const flattenedReviews = useMemo(
+    () => reviewsByProduct.flatMap((entry) => entry.reviews),
+    [reviewsByProduct]
+  );
   const imageReviews = useMemo(
     () =>
-      paginatedReviews
+      flattenedReviews
         .filter((review) => review.imagini && review.imagini.length > 0)
         .map((review) => ({
           ...review,
           imageUrl: review.imagini![0].full || review.imagini![0].thumbnail,
         })),
-    [paginatedReviews]
+    [flattenedReviews]
   );
 
   const summary = useMemo(() => {
@@ -191,16 +227,6 @@ const DesktopReviewsPage = () => {
                   </button>
               );
             })}
-            {selectedProductId && (
-                <button
-                    type="button"
-                    onClick={() => setSelectedProductId(null)}
-                    data-track-action="A resetat filtrul de produs din recenzii."
-                    className="rounded-full border border-border bg-white px-4 py-2 text-xs font-semibold text-amber-700"
-                >
-                  Reseteaza produs
-                </button>
-            )}
           </div>
 
           <div className="flex items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-foreground">
@@ -225,57 +251,73 @@ const DesktopReviewsPage = () => {
               </div>
             )}
 
-            {!loading && !error && reviews.length === 0 && (
+            {!loading && !error && reviewsByProduct.length === 0 && (
               <div className="rounded-2xl border border-border bg-white p-4 text-sm text-muted-foreground">
                 Nu exista recenzii disponibile.
               </div>
             )}
 
-            {!loading && !error && reviews.length > 0 && (
-              <div className="columns-1 gap-4 space-y-4 md:columns-3 lg:columns-4 xl:columns-6">
-                {paginatedReviews.map((review) => {
-                  const hasImages = review.imagini && review.imagini.length > 0;
-                  const imageUrl = hasImages ? review.imagini![0].full || review.imagini![0].thumbnail : '';
+            {!loading && !error && reviewsByProduct.length > 0 && (
+              <div className="space-y-8">
+                {reviewsByProduct.map(({ product, reviews }) => (
+                  <div
+                    key={product.id}
+                    id={`review-product-${product.id}`}
+                    className="scroll-mt-24"
+                  >
+                    <div className="overflow-x-auto [&::-webkit-scrollbar]:hidden">
+                      <div className="flex gap-4 snap-x snap-mandatory">
+                        {reviews.map((review) => {
+                          const hasImages = review.imagini && review.imagini.length > 0;
+                          const imageUrl = hasImages
+                            ? review.imagini![0].full || review.imagini![0].thumbnail
+                            : '';
 
-                  return (
-                    <div
-                      key={review.id_recenzie}
-                      className="mb-4 break-inside-avoid rounded-2xl border border-border bg-white p-3 shadow-sm"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-semibold text-foreground font-serif">{review.autor}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{formatDate(review.data)}</p>
-                        </div>
-                        {renderStars(review.rating)}
+                          return (
+                            <div
+                              key={review.id_recenzie}
+                              className="w-[360px] shrink-0 snap-center rounded-2xl border border-border bg-white p-4 shadow-sm"
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div>
+                                  <p className="text-sm font-semibold text-foreground font-serif">{review.autor}</p>
+                                  <p className="mt-1 text-xs text-muted-foreground">{formatDate(review.data)}</p>
+                                </div>
+                                {renderStars(review.rating)}
+                              </div>
+                              <p className="mt-3 text-sm text-foreground whitespace-pre-line font-serif">
+                                {review.continut}
+                              </p>
+                              {hasImages && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const imageIndex = imageReviews.findIndex(
+                                      (item) => item.id_recenzie === review.id_recenzie
+                                    );
+                                    if (imageIndex >= 0) {
+                                      setZoomIndex(imageIndex);
+                                    }
+                                  }}
+                                  data-track-action="A deschis poza din recenzie."
+                                  className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20"
+                                  aria-label="Deschide poza recenzie"
+                                >
+                                  <img
+                                    src={imageUrl}
+                                    alt={review.autor}
+                                    className="w-full object-cover"
+                                    loading="lazy"
+                                  />
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
-                      <p className="mt-3 text-sm text-foreground whitespace-pre-line font-serif">{review.continut}</p>
-                      {hasImages && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const imageIndex = imageReviews.findIndex(
-                              (item) => item.id_recenzie === review.id_recenzie
-                            );
-                            if (imageIndex >= 0) {
-                              setZoomIndex(imageIndex);
-                            }
-                          }}
-                          data-track-action="A deschis poza din recenzie."
-                          className="mt-3 overflow-hidden rounded-xl border border-border bg-muted/20"
-                          aria-label="Deschide poza recenzie"
-                        >
-                          <img
-                            src={imageUrl}
-                            alt={review.autor}
-                            className="w-full object-cover"
-                            loading="lazy"
-                          />
-                        </button>
-                      )}
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -398,8 +440,11 @@ const DesktopReviewsPage = () => {
                   type="button"
                   onClick={() => {
                     const productId = String(product.id);
-                    setSelectedProductId((prev) => (prev === productId ? null : productId));
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setSelectedProductId(productId);
+                    const target = document.getElementById(`review-product-${productId}`);
+                    if (target) {
+                      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
                   }}
                   data-track-action={`A selectat produsul ${product.titlu} din recenzii.`}
                   className={`flex w-24 shrink-0 flex-col overflow-hidden rounded-2xl border bg-white text-left transition-transform hover:-translate-y-1 ${

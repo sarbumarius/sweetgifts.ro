@@ -518,7 +518,7 @@ export const categories: Category[] = [
     "parent_id": 87,
     "nivel": 1,
     "titlu": "Cadouri pentru botez",
-    "slug": "cadouri-pentru-botez",
+    "slug": "cadouri-ziua-indragostitilor",
     "count": 85,
     "icon": "https://darurialese.ro/wp-content/uploads/2022/05/botez-01.svg"
   },

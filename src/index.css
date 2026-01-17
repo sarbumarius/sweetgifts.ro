@@ -109,7 +109,7 @@ All colors MUST be HSL.
 
 @layer utilities {
   .gold-gradient {
-    background: linear-gradient(45deg, #faca8c 0%, #e0a35c 19%, #cf843b 61%, #f1bd81 81%, #f8ca95 88%, #fae3ca 100%);
+    background: linear-gradient(90deg, #fa1353 0%,  #db0e43 100%);
   }
   
   .gold-gradient-text {
@@ -298,6 +298,44 @@ a.tag:active {
           radial-gradient(circle 15px at 530px 60px, #eaf7fa 99%, transparent 100%);
 
   background-repeat: repeat-x;
+}
+
+
+
+
+.cloud-chaos-footer {
+  position: relative;
+  overflow: hidden;
+  padding-top:40px;
+}
+.cloud-chaos-footer::before {
+  content: "";
+  position: absolute;
+  rotate: -180deg;
+  left: 0px;
+  right: 0;
+  top: -2px; /* AICI e schimbarea */
+  height: 70px;
+  pointer-events: none;
+  z-index: 1;
+
+
+  background: radial-gradient(circle 19px at 18px 60px, #fff 99%, transparent 100%),
+  radial-gradient(circle 17px at 50px 62px, #fff 99%, transparent 100%),
+  radial-gradient(circle 23px at 84px 59px, #fff 99%, transparent 100%),
+  radial-gradient(circle 25px at 126px 74px, #fff 99%, transparent 100%),
+  radial-gradient(circle 22px at 167px 64px, #fff 99%, transparent 100%),
+  radial-gradient(circle 27px at 210px 64px, #fff 99%, transparent 100%),
+  radial-gradient(circle 40px at 268px 81px, #fff 99%, transparent 100%),
+  radial-gradient(circle 20px at 311px 65px, #fff 99%, transparent 100%),
+  radial-gradient(circle 13px at 340px 64px, #fff 99%, transparent 100%),
+  radial-gradient(circle 24px at 374px 64px, #fff 99%, transparent 100%),
+  radial-gradient(circle 17px at 450px 56px, #eaf7fa 99%, transparent 100%),
+  radial-gradient(circle 9px at 490px 46px, #eaf7fa 99%, transparent 100%),
+  radial-gradient(circle 15px at 530px 60px, #eaf7fa 99%, transparent 100%);
+
+  background-repeat: repeat-x;
+
 }
 
 .chaos-floaters {

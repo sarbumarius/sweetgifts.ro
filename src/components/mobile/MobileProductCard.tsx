@@ -262,7 +262,7 @@ const MobileProductCard = ({
           <span className="line-clamp-2">{product.titlu}</span>
         </button>
           <div className="mt-1 flex items-center justify-center gap-2">
-            <span className="text-base font-bold text-primary">{discountedPrice.toFixed(2)} lei</span>
+            <span className="text-base font-bold text-red-700">{discountedPrice.toFixed(2)} lei</span>
             {hasDiscount && (
               <span className="text-xs text-muted-foreground line-through">{originalPrice.toFixed(2)} lei</span>
             )}
@@ -347,7 +347,7 @@ const MobileProductCard = ({
                       })()}
                     </h3>
                     <div className="mt-0 flex flex-wrap items-center gap-2">
-                      <span className="text-base font-bold text-primary">{discountedPrice.toFixed(2)} lei</span>
+                      <span className="text-base font-bold text-red-700">{discountedPrice.toFixed(2)} lei</span>
                       {hasDiscount && (
                         <span className="text-xs text-muted-foreground line-through">{originalPrice.toFixed(2)} lei</span>
                       )}

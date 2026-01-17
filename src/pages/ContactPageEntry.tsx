@@ -1,6 +1,6 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import ContactPage from './ContactPage';
-import DesktopContactPage from './DesktopContactPage';
+import DesktopWorkInProgressPage from './DesktopWorkInProgressPage';
 
 const ContactPageEntry = () => {
   const isMobile = useIsMobile();
@@ -13,7 +13,7 @@ const ContactPageEntry = () => {
     );
   }
 
-  return isMobile ? <ContactPage /> : <DesktopContactPage />;
+  return isMobile ? <ContactPage /> : <DesktopWorkInProgressPage />;
 };
 
 export default ContactPageEntry;

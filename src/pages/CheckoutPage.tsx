@@ -1379,7 +1379,7 @@ const CheckoutPage = () => {
         title="Date facturare"
         onBack={() => navigate(-1)}
         onLogoClick={() => {
-          setCurrentSlug('cadouri-pentru-botez');
+          setCurrentSlug('cadouri-ziua-indragostitilor');
           navigate('/');
         }}
         cartCount={cart.length}

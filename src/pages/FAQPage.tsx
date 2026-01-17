@@ -105,7 +105,7 @@ const FAQPage = () => {
         centerTitle
         onMenuClick={() => setIsMenuOpen(true)}
         onLogoClick={() => {
-          setCurrentSlug('cadouri-pentru-botez');
+          setCurrentSlug('cadouri-ziua-indragostitilor');
           navigate('/');
         }}
         cartCount={cart.length}

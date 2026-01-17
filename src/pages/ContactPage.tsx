@@ -27,7 +27,7 @@ const ContactPage = () => {
         centerTitle
         onMenuClick={() => setIsMenuOpen(true)}
         onLogoClick={() => {
-          setCurrentSlug('cadouri-pentru-botez');
+          setCurrentSlug('cadouri-ziua-indragostitilor');
           navigate('/');
         }}
         cartCount={cart.length}
@@ -48,7 +48,7 @@ const ContactPage = () => {
             />
           </div>
           <div className="px-4 py-3 text-sm font-semibold text-foreground">
-            Zetarilor 52b, sediul Daruri Alese
+            Zetarilor 52b, sediul Perfect Gift SRL
           </div>
         </div>
 
@@ -83,7 +83,7 @@ const ContactPage = () => {
         </div>
 
 
-        <div className="rounded-2xl border border-border bg-white p-4">
+        <div className="rounded-2xl border border-border bg-white p-4 hidden">
           <p className="text-sm font-semibold text-foreground">Contact manager</p>
           <p className="mt-1 text-sm text-muted-foreground">
             <span className="mr-2">👤</span>

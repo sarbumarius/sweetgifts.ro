@@ -1,6 +1,6 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import DiscountsPage from './DiscountsPage';
-import DesktopDiscountsPage from './DesktopDiscountsPage';
+import DesktopWorkInProgressPage from './DesktopWorkInProgressPage';
 
 const DiscountsPageEntry = () => {
   const isMobile = useIsMobile();
@@ -13,7 +13,7 @@ const DiscountsPageEntry = () => {
     );
   }
 
-  return isMobile ? <DiscountsPage /> : <DesktopDiscountsPage />;
+  return isMobile ? <DiscountsPage /> : <DesktopWorkInProgressPage />;
 };
 
 export default DiscountsPageEntry;

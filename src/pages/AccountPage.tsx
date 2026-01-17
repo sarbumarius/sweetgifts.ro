@@ -18,7 +18,7 @@ const AccountPage = () => {
         onBack={() => navigate(-1)}
         onSearchClick={() => setIsSearchOpen(true)}
         onLogoClick={() => {
-          setCurrentSlug('cadouri-pentru-botez');
+          setCurrentSlug('cadouri-ziua-indragostitilor');
           navigate('/');
         }}
         cartCount={cart.length}

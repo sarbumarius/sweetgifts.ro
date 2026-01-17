@@ -296,7 +296,7 @@ const DesktopCartPage = () => {
             <button
               type="button"
               onClick={() => {
-                setCurrentSlug('cadouri-pentru-botez');
+                setCurrentSlug('cadouri-ziua-indragostitilor');
                 navigate('/');
               }}
               data-track-action="A mers la categorii din cos gol."
